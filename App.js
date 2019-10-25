@@ -2,8 +2,8 @@ import React from 'react';
 import { StatusBar } from 'react-native'
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { uri as serverURL } from './app/network'
-import { Connection } from './app/navigator/navigator'
+import { uri as serverURL } from './src/network'
+import { Connection } from './src/navigator/navigator'
 
 StatusBar.setBarStyle('light-content', true);
 
