@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default class AppButton extends React.Component {
-  render() {
-    return (
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.buttonBg}
-          onPress={() => { }} >
-          <Text style={styles.buttonText}>{this.props.label}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+export default function AppButton() {
+  return (
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity
+        style={styles.buttonBg}
+        onPress={() => { }} >
+        <Text style={styles.buttonText}>{this.props.label}</Text>
+      </TouchableOpacity>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

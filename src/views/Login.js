@@ -83,6 +83,8 @@ Login.navigationOptions = {
   header: null,
 };
 
+export default Login
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -183,5 +185,3 @@ const styles = StyleSheet.create({
     color: '#fff',
   }
 });
-
-export default Login

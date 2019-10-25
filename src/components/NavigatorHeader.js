@@ -5,19 +5,17 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 Icon.loadFont();
 
-class StackNavigatorHeader extends React.Component {
-  render() {
-    const { goBack } = this.props.navigation;
-    return (
-      <View style={styles.headerBar}>
-        <TouchableOpacity
-          onPress={() => goBack()} style={styles.button}>
-          <Icon name="chevron-left" size={18} color="#fff" style={styles.headerButton} />
-          <Text style={styles.text}>Cancel</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+function StackNavigatorHeader() {
+  const { goBack } = this.props.navigation;
+  return (
+    <View style={styles.headerBar}>
+      <TouchableOpacity
+        onPress={() => goBack()} style={styles.button}>
+        <Icon name="chevron-left" size={18} color="#fff" style={styles.headerButton} />
+        <Text style={styles.text}>Cancel</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
