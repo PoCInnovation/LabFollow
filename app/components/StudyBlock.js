@@ -11,8 +11,6 @@ export default class StudyBlock extends React.Component {
           <View style={styles.studyOverview}>
             <Text>Dr. </Text>
             <Text>{this.props.doctorName}</Text>
-            {/* <Text> - </Text>
-                    <Text>{this.props.studyCreationDate}</Text> */}
           </View>
         </TouchableOpacity>
       </View>

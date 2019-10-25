@@ -6,11 +6,10 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { loginPatient } from '../network/login'
 import { _storeData } from '../utils/localStorage'
 
-
 Icon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
 
-const HomeScreen = (props) => {
+const Login = (props) => {
 
   const [login, setLogin] = React.useState('jean@epitech.eu')
   const [password, setPassword] = React.useState('azerty')
@@ -79,8 +78,8 @@ const HomeScreen = (props) => {
   );
 }
 
-HomeScreen.navigationOptions = {
-  title: 'Welcome',
+Login.navigationOptions = {
+  title: 'Login',
   header: null,
 };
 
@@ -185,4 +184,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomeScreen
+export default Login

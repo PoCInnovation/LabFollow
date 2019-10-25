@@ -2,20 +2,21 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import HomeScreen from '../components/HomeScreen'
-import Login from '../components/Login'
-import Signup from '../components/Signup'
-import SignupDetails from '../components/SignupDetails'
-import Studies from '../components/Studies'
+import Login from '../views/Login'
+import Signup from '../views/Signup'
+import SignupDetails from '../views/SignupDetails'
+import Studies from '../views/Studies'
 import { _retrieveData } from '../utils/localStorage'
 
 const SignedIn = createDrawerNavigator({
+  Login: { screen: Login },
   Studies: { screen: Studies },
+
+  Signup: { screen: Signup },
+  SignupDetails: { screen: SignupDetails },
 });
 
 const SignedOut = createStackNavigator({
-  Home: { screen: HomeScreen },
-  Login: { screen: Login },
   Signup: { screen: Signup },
   SignupDetails: { screen: SignupDetails },
 });

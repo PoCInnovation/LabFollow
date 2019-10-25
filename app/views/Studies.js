@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Button, SafeAreaView, View } from 'react-native';
-import MainHeader from './MainHeader'
+import MainHeader from '../components/MainHeader'
 import { ScrollView } from 'react-native-gesture-handler';
 import { MePatient } from '../network/mePatient'
 

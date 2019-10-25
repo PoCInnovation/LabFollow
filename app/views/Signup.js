@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Fontisto';
-import StackNavigatorHeader from './NavigatorHeader';
+import StackNavigatorHeader from '../components/NavigatorHeader';
 
 FAIcon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
