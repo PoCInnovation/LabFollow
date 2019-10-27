@@ -1,53 +1,72 @@
-import React from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import StudyBlock from '../components/StudyBlock'
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
-import { _retrieveData } from '../utils/localStorage'
+import { apolloFetch } from './index'
 
-const ME_PATIENT = gql`
-  {
-    mePatient {
-      doctors {
-        id
-        name
-        email
+export function fetchMePatient(token, context) {
+  return new Promise((resolve, reject) => {
+
+    const query = `
+      query getPatientInfo {
+        mePatient {
+          doctors {
+            id
+            name
+            email
+          }
+          id
+          name
+          email
+          surveys {
+            id
+            title
+            content
+            submitter { name }
+            createdAt
+          }
+        }
       }
-      id
-      name
-      email
-      surveys {
-        id
-        title
-        content
-        submitter { name }
-        createdAt
-      }
+    `;
+
+    apolloFetch.use(({ request, options }, next) => {
+      if (!options.headers) { options.headers = {}; }
+      options.headers['authorization'] = token;
+      next();
+    });
+
+    return apolloFetch({ query })
+      .then(res => {
+        console.log(res.data.mePatient)
+        context.updateName(res.data.mePatient.name)
+        context.updateEmail(res.data.mePatient.email)
+        resolve(res.data.mePatient.surveys);
+      })
+      .catch(err => {
+        console.log(err)
+        reject(err)
+      })
+  })
+}
+
+export function MePatient(props) {
+
+  const [data, setData] = React.useState()
+
+  useEffect(() => {
+    if (!data) {
+      getData(props.context.data.token);
     }
+  }, []);
+
+  const getData = async (token) => {
+    setData(await fetchMePatient(token, props.context))
   }
-`;
 
-export function MePatient(token) {
-  const { loading, error, data } = useQuery(ME_PATIENT);
-
-  if (loading) return (
-    <View style={styles.studyList}>
-      <ActivityIndicator />
-    </View>
-  );
-  if (error) return (
-    <View style={styles.studyList}>
-      <Text>An error occurred while trying to load your studies.</Text>
-      <Text>Please retry later.</Text>
-    </View>
-  );
-
-  console.log(data)
   return (
     <View style={styles.studyList}>
       <FlatList
-        data={data.mePatient.surveys}
-        renderItem={({ item }) => (<StudyBlock studyName={item.title} doctorName={item.submitter.name} studyCreationDate={item.createdAt}></StudyBlock>)}
+        data={data}
+        renderItem={({ item }) => (<StudyBlock studyName={item.title} doctorName={item.submitter.name} studyCreationDate={item.createdAt} />)}
         keyExtractor={item => item.id}
         width='90%'
       />

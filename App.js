@@ -4,6 +4,7 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { uri as serverURL } from './src/network'
 import { Connection } from './src/navigator/navigator'
+import Provider from "./src/store/provider";
 
 StatusBar.setBarStyle('light-content', true);
 
@@ -12,12 +13,14 @@ const client = new ApolloClient({
 });
 
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <ApolloProvider client={client}>
+const App = () => {
+  return (
+    <ApolloProvider client={client}>
+      <Provider>
         <Connection />
-      </ApolloProvider>
-    );
-  }
+      </Provider>
+    </ApolloProvider>
+  );
 }
+
+export default App

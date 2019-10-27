@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Fontisto';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { loginPatient } from '../network/login'
-import { _storeData } from '../utils/localStorage'
+import Context from "../store/context";
 
 Icon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
@@ -14,74 +14,69 @@ const Login = (props) => {
   const [login, setLogin] = React.useState('jean@epitech.eu')
   const [password, setPassword] = React.useState('azerty')
 
-  const handleLogin = async () => {
-    console.log(login, password)
+  const handleLogin = async (context) => {
     const token = await loginPatient(login, password)
-    console.log(token)
-
-    await _storeData('token', token)
-    await _storeData('isLogged', true)
+    context.updateToken(token)
     props.navigation.navigate('Studies')
   }
 
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={["#00cdac", "#02aab0"]}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            Lab Follow
-        </Text>
-          <View style={styles.mainContainer}>
-            <Text style={styles.paragraph}>
-              Please enter your email and password to login to LabFollow.
-            </Text>
-            <View style={styles.textfieldContainer}>
-              <Icon style={styles.textfieldIcon} name="email" size={20} color="#fff" />
-              <TextInput
-                placeholder="email"
-                placeholderTextColor="#ffffff77"
-                autoCapitalize='none'
-                style={styles.textfield}
-                onChangeText={text => setLogin(text)}
-                value={login}
-              />
-            </View>
-            <View style={styles.textfieldContainer}>
-              <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
-              <TextInput
-                placeholder="password"
-                placeholderTextColor="#ffffff77"
-                autoCapitalize='none'
-                secureTextEntry={true}
-                style={styles.textfield}
-                onChangeText={text => setPassword(text)}
-                value={password}
-              />
-            </View>
-            <TouchableOpacity onPress={handleLogin}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Login</Text>
+    <Context.Consumer>
+      {context => (
+        <LinearGradient
+          style={styles.container}
+          colors={["#00cdac", "#02aab0"]}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={styles.container}>
+              <Text style={styles.title}>
+                Lab Follow
+              </Text>
+              <View style={styles.mainContainer}>
+                <Text style={styles.paragraph}>
+                  Please enter your email and password to login to LabFollow.
+                </Text>
+                <View style={styles.textfieldContainer}>
+                  <Icon style={styles.textfieldIcon} name="email" size={20} color="#fff" />
+                  <TextInput
+                    placeholder="email"
+                    placeholderTextColor="#ffffff77"
+                    autoCapitalize='none'
+                    style={styles.textfield}
+                    onChangeText={text => setLogin(text)}
+                    value={login}
+                  />
+                </View>
+                <View style={styles.textfieldContainer}>
+                  <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
+                  <TextInput
+                    placeholder="password"
+                    placeholderTextColor="#ffffff77"
+                    autoCapitalize='none'
+                    secureTextEntry={true}
+                    style={styles.textfield}
+                    onChangeText={text => setPassword(text)}
+                    value={password}
+                  />
+                </View>
+                <TouchableOpacity onPress={() => {handleLogin(context)}}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Login</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Signup')}>
-            <View style={styles.button2}>
-              <Text style={styles.button2Text}>Create an Account</Text>
+              <TouchableOpacity onPress={() => props.navigation.navigate('Signup')}>
+                <View style={styles.button2}>
+                  <Text style={styles.button2Text}>Create an Account</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
-      </TouchableWithoutFeedback>
-    </LinearGradient>
+          </TouchableWithoutFeedback>
+        </LinearGradient>
+      )}
+    </Context.Consumer>
   );
 }
-
-Login.navigationOptions = {
-  title: 'Login',
-  header: null,
-};
 
 export default Login
 
