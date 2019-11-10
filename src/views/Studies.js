@@ -15,7 +15,7 @@ const Studies = (props) => {
             <ScrollView style={styles.scrollView}>
               <MePatient context={context} />
               <Button
-                title="Logout"
+                title="Déconnexion"
                 onPress={() => props.navigation.navigate('Home')}
               />
             </ScrollView>

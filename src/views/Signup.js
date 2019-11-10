@@ -27,11 +27,11 @@ export default class Signup extends React.Component {
           <View style={styles.container}>
             <FAIcon name='handshake-o' size={90} color='#fff' style={styles.mainIcon} />
             <Text style={styles.title}>
-              Account Creation
+              Creation de compte
         </Text>
             <View style={styles.mainContainer}>
               <Text style={styles.paragraph}>
-                Please choose the email address and a password you wish to use to login.
+                Choisissez l'email et le mot de passe que vous vous souhaitez utiliser.
             </Text>
               {/* <Text style={styles.textfieldTitle}>Email</Text> */}
               <View style={styles.textfieldContainer}>

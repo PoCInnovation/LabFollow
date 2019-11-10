@@ -34,7 +34,7 @@ const Login = (props) => {
               </Text>
               <View style={styles.mainContainer}>
                 <Text style={styles.paragraph}>
-                  Please enter your email and password to login to LabFollow.
+                  Entrez vous identifiants pour vous connecter à LabFollow.
                 </Text>
                 <View style={styles.textfieldContainer}>
                   <Icon style={styles.textfieldIcon} name="email" size={20} color="#fff" />
@@ -61,13 +61,13 @@ const Login = (props) => {
                 </View>
                 <TouchableOpacity onPress={() => {handleLogin(context)}}>
                   <View style={styles.button}>
-                    <Text style={styles.buttonText}>Login</Text>
+                    <Text style={styles.buttonText}>Connexion</Text>
                   </View>
                 </TouchableOpacity>
               </View>
               <TouchableOpacity onPress={() => props.navigation.navigate('Signup')}>
                 <View style={styles.button2}>
-                  <Text style={styles.button2Text}>Create an Account</Text>
+                  <Text style={styles.button2Text}>Créer un compte</Text>
                 </View>
               </TouchableOpacity>
             </View>

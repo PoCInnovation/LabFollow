@@ -27,11 +27,11 @@ export default class SignupDetails extends React.Component {
           <View style={styles.container}>
             <Icon name='person' size={90} color='#fff' style={styles.mainIcon} />
             <Text style={styles.title}>
-              Welcome!
+              Bienvenue
         </Text>
             <View style={styles.mainContainer}>
               <Text style={styles.paragraph}>
-                Tell us more about you. Those informations will be used by your doctor(s) to send you studies. Please enter your name and your date of birth.
+                Dites nous en plus à propos de vous. Ces informations seront utilisées par vos docteurs pour vous envoyer des questionnaires adaptés. Entrez votre nom et votre date de naissance.
             </Text>
               {/* <Text style={styles.textfieldTitle}>Email</Text> */}
               <View style={styles.textfieldContainer}>

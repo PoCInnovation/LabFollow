@@ -12,7 +12,7 @@ function StackNavigatorHeader() {
       <TouchableOpacity
         onPress={() => goBack()} style={styles.button}>
         <Icon name="chevron-left" size={18} color="#fff" style={styles.headerButton} />
-        <Text style={styles.text}>Cancel</Text>
+        <Text style={styles.text}>Annuler</Text>
       </TouchableOpacity>
     </View>
   );
