@@ -22,11 +22,10 @@ export function signupPatient(name, email, password) {
 
   return apolloFetch({ query, variables })
     .then(res => {
-      console.log(res)
-      resolve(res.data.signupPatient.token);
+      return (res.data.signupPatient.token);
     })
     .catch(err => {
       console.log(err)
-      reject(err)
+      return (err)
     })
 }

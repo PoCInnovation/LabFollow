@@ -1,6 +1,6 @@
 import { apolloFetch } from './index'
 
-export function fetchMePatient(token, context) {
+export function fetchMePatient(token) {
 
   const query = `
       query getPatientInfo {
@@ -32,13 +32,10 @@ export function fetchMePatient(token, context) {
 
   return apolloFetch({ query })
     .then(res => {
-      console.log(res.data.mePatient)
-      context.updateName(res.data.mePatient.name)
-      context.updateEmail(res.data.mePatient.email)
-      resolve(res.data.mePatient);
+      return (res.data.mePatient);
     })
     .catch(err => {
       console.log(err)
-      reject(err)
+      return (err)
     })
 }

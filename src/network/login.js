@@ -20,10 +20,10 @@ export function loginPatient(email, password) {
 
   return apolloFetch({ query, variables })
     .then(res => {
-      resolve(res.data.loginPatient.token);
+      return (res.data.loginPatient.token);
     })
     .catch(err => {
       console.log(err)
-      reject(err)
+      return (err)
     })
 }

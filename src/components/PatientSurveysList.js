@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Text } from 'react-native';
 import StudyBlock from './StudyBlock'
-import fetchMePatient from '../network/mePatient'
+import { fetchMePatient } from '../network/mePatient'
 
 export function PatientSurveysList(props) {
 
@@ -9,22 +9,34 @@ export function PatientSurveysList(props) {
 
   useEffect(() => {
     if (!data) {
-      getData(props.context.data.token);
+      getData(props.context.token);
     }
   }, []);
 
+  useEffect(() => {
+    if (data) {
+      props.context.updateId(data.id)
+      props.context.updateName(data.name)
+      props.context.updateEmail(data.email)
+      props.context.updateDoctor(data.doctors)
+      props.context.updateSurveys(data.surveys)
+    }
+  }, [data]);
+
   const getData = async (token) => {
-    setData(await fetchMePatient(token, props.context))
+    setData(await fetchMePatient(token))
   }
 
   return (
     <View style={styles.studyList}>
-      <FlatList
-        data={data.surveys}
-        renderItem={({ item }) => (<StudyBlock studyName={item.title} doctorName={item.submitter.name} studyCreationDate={item.createdAt} />)}
-        keyExtractor={item => item.id}
-        width='90%'
-      />
+      {!data ? <Text>Loading...</Text> :
+        <FlatList
+          data={data.surveys}
+          renderItem={({ item }) => (<StudyBlock studyName={item.title} doctorName={item.submitter.name} studyCreationDate={item.createdAt} />)}
+          keyExtractor={item => item.id}
+          width='90%'
+        />
+      }
     </View>
   );
 }

@@ -2,25 +2,28 @@ import React, { useState } from "react";
 import PackageContext from "./context";
 
 const provider = props => {
-  const [state, setState] = useState({
-    token: "",
-    name: "",
-    email: "",
-  });
+  const [token, setToken] = useState("");
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [doctors, setDoctors] = useState([]);
+  const [surveys, setSurveys] = useState([]);
 
   return (
     <PackageContext.Provider
       value={{
-        data: state,
-        updateToken: (newToken) => {
-          setState({ ...state, token: newToken });
-        },
-        updateName: (newName) => {
-          setState({ ...state, mame: newName });
-        },
-        updateEmail: (newEmail) => {
-          setState({ ...state, Email: newEmail });
-        },
+        token,
+        id,
+        name,
+        email,
+        doctors,
+        surveys,
+        updateToken: setToken,
+        updateId: setId,
+        updateName: setName,
+        updateEmail: setEmail,
+        updateDoctor: setDoctors,
+        updateSurveys: setSurveys,
       }}
     >
       {props.children}

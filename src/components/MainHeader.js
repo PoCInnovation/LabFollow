@@ -1,37 +1,56 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default class MainHeader extends React.Component {
-  render() {
-    return (
-      <View>
-        <LinearGradient
-          style={styles.mainHeaderBackground}
-          colors={["#00cdac", "#02aab0"]}
-        >
-          <SafeAreaView style={styles.container}>
-            <View style={styles.leftContainer}>
-              <Button
-                style={styles.textfieldIcon}
-                title='='
-                onPress={() => this.props.navigation.openDrawer()}
-              />
-            </View>
-            <View style={styles.centerContainer}>
-              <Text style={styles.mainHeaderTitle}>{this.props.title}</Text>
-            </View>
-            <View style={styles.rightContainer}>
-              <Icon style={styles.textfieldIcon} name="menu" size={22} color="#fff" />
-            </View>
-          </SafeAreaView>
-        </LinearGradient>
-      </View>
-    )
+const MainHeader = (props) => {
+
+  const handleDisconnect = (context) => {
+    context.updateId("")
+    context.updateName("")
+    context.updateEmail("")
+    context.updateToken("")
+    context.updateDoctor([])
+    context.updateSurveys([])
+    props.navigation.navigate('Login')
   }
+
+  return (
+    <View>
+      <LinearGradient
+        style={styles.mainHeaderBackground}
+        colors={["#00cdac", "#02aab0"]}
+      >
+        <SafeAreaView style={styles.container}>
+          <View style={styles.leftContainer}>
+            <Icon
+              style={styles.textfieldIcon}
+              name="menu"
+              size={22}
+              color="#fff"
+              onPress={() => props.navigation.openDrawer()}
+            />
+          </View>
+          <View style={styles.centerContainer}>
+            <Text style={styles.mainHeaderTitle}>{props.title}</Text>
+          </View>
+          <View style={styles.rightContainer}>
+            <Icon
+              style={styles.textfieldIcon}
+              name="exit-to-app"
+              size={22}
+              color="#FF0000"
+              onPress={() => handleDisconnect(props.context)}
+            />
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
+    </View>
+  )
 }
+
+export default MainHeader
 
 const styles = StyleSheet.create({
   mainHeaderBackground: {
