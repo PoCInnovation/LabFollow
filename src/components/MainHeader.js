@@ -40,7 +40,7 @@ const MainHeader = (props) => {
               style={styles.textfieldIcon}
               name="exit-to-app"
               size={22}
-              color="#FF0000"
+              color="#d1625a"
               onPress={() => handleDisconnect(props.context)}
             />
           </View>

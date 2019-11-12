@@ -6,11 +6,15 @@ import Signup from '../views/Signup'
 import SignupDetails from '../views/SignupDetails'
 import Studies from '../views/Studies'
 
+const Hidden = () => {
+    return null;
+}
+
 const Navigator = createDrawerNavigator({
-  Login: { screen: Login, navigationOptions: { title: 'Connexion', header: null } },
   Studies: { screen: Studies, navigationOptions: { title: 'Questionnaires', header: null, gesturesEnabled: false } },
-  Signup: { screen: Signup, navigationOptions: { title: 'Inscription', header: null } },
-  SignupDetails: { screen: SignupDetails, navigationOptions: { header: null } },
+  Login: { screen: Login, navigationOptions: { title: 'Connexion', header: null, drawerLabel: <Hidden /> } },
+  Signup: { screen: Signup, navigationOptions: { title: 'Inscription', header: null, drawerLabel: <Hidden /> } },
+  SignupDetails: { screen: SignupDetails, navigationOptions: { header: null, drawerLabel: <Hidden /> } },
 });
 
 const NavigatorComponent = createAppContainer(Navigator);
@@ -20,5 +24,3 @@ export let Connection = () => {
     <NavigatorComponent />
   )
 }
-
-//https://stackoverflow.com/questions/54218039/how-can-i-hide-a-specific-tab-component-in-react-native
