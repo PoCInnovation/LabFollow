@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Button, SafeAreaView, View } from 'react-native';
 import MainHeader from '../components/MainHeader'
 import { ScrollView } from 'react-native-gesture-handler';
-import { MePatient } from '../network/mePatient'
+import { PatientSurveysList } from '../components/PatientSurveysList'
 import Context from "../store/context";
 
 const Studies = (props) => {
@@ -13,7 +13,7 @@ const Studies = (props) => {
           <MainHeader title="Mes questionnaires" navigation={props.navigation} />
           <SafeAreaView>
             <ScrollView style={styles.scrollView}>
-              <MePatient context={context} />
+              <PatientSurveysList context={context} />
               <Button
                 title="Déconnexion"
                 onPress={() => props.navigation.navigate('Home')}
