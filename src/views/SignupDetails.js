@@ -1,66 +1,84 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View, Text, TextInput, Keyboard } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Fontisto';
-import StackNavigatorHeader from '../components/NavigatorHeader';
 
 FAIcon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
 
-export default class SignupDetails extends React.Component {
-  static navigationOptions = {
-    title: 'SignupDetails',
-    header: null,
-  };
-  render() {
-    const { navigate } = this.props.navigation;
-    return (
-      <LinearGradient
-        style={styles.container}
-        colors={["#00cdac", "#02aab0"]}
-      >
-        <SafeAreaView>
-          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
-          <StackNavigatorHeader navigation={this.props.navigation} />
-          <View style={styles.container}>
-            <Icon name='person' size={90} color='#fff' style={styles.mainIcon} />
-            <Text style={styles.title}>
-              Bienvenue
-        </Text>
-            <View style={styles.mainContainer}>
-              <Text style={styles.paragraph}>
-                Dites nous en plus à propos de vous. Ces informations seront utilisées par vos docteurs pour vous envoyer des questionnaires adaptés. Entrez votre nom et votre date de naissance.
+const SignupDetails = (props) => {
+
+  const [firstName, setFirstName] = React.useState('')
+  const [lastName, setLastName] = React.useState('')
+  const [birthDay, setBirthDay] = React.useState('')
+
+  return (
+    <LinearGradient
+      style={styles.container}
+      colors={["#00cdac", "#02aab0"]}
+    >
+      <SafeAreaView>
+        <View style={styles.container}>
+          <Icon name='person' size={90} color='#fff' style={styles.mainIcon} />
+          <Text style={styles.title}>Bienvenue</Text>
+          <View style={styles.mainContainer}>
+            <Text style={styles.paragraph}>
+              Dites nous en plus à propos de vous. Ces informations seront utilisées par vos docteurs pour vous envoyer des questionnaires adaptés.
             </Text>
-              {/* <Text style={styles.textfieldTitle}>Email</Text> */}
-              <View style={styles.textfieldContainer}>
-                <Icon style={styles.textfieldIcon} name="person" size={20} color="#fff" />
-                <TextInput placeholder="First Name" placeholderTextColor="#ffffff77" style={styles.textfield}></TextInput>
-              </View>
-              {/* <Text style={styles.textfieldTitle}>Password</Text> */}
-              <View style={styles.textfieldContainer}>
-                <Icon style={styles.textfieldIcon} name="person" size={20} color="#fff" />
-                <TextInput placeholder="Last Name" placeholderTextColor="#ffffff77" secureTextEntry={true} style={styles.textfield}></TextInput>
-              </View>
-              <View style={styles.textfieldContainer}>
-                <Icon style={styles.textfieldIcon} name="date" size={20} color="#fff" />
-                <TextInput placeholder="MM/DD/YYYY" placeholderTextColor="#ffffff77" autoCapitalize='none' secureTextEntry={true} style={styles.textfield}></TextInput>
-              </View>
-              <TouchableOpacity
-                onPress={() => navigate('Studies')}>
-                <View style={styles.button}>
-                  <Text style={styles.buttonText}>Done</Text>
-                </View>
-              </TouchableOpacity>
+            <View style={styles.textfieldContainer}>
+              <Icon style={styles.textfieldIcon} name="person" size={20} color="#fff" />
+              <TextInput
+                    placeholder="Prénom"
+                    placeholderTextColor="#ffffff77"
+                    autoCapitalize='none'
+                    style={styles.textfield}
+                    onChangeText={text => setFirstName(text)}
+                    value={firstName}
+                  />
             </View>
+            <View style={styles.textfieldContainer}>
+              <Icon style={styles.textfieldIcon} name="person" size={20} color="#fff" />
+              <TextInput
+                    placeholder="Nom de famille"
+                    placeholderTextColor="#ffffff77"
+                    autoCapitalize='none'
+                    style={styles.textfield}
+                    onChangeText={text => setLastName(text)}
+                    value={lastName}
+                  />
+            </View>
+            <View style={styles.textfieldContainer}>
+              <Icon style={styles.textfieldIcon} name="date" size={20} color="#fff" />
+              <TextInput
+                    placeholder="JJ.MM.AAAA"
+                    placeholderTextColor="#ffffff77"
+                    autoCapitalize='none'
+                    keyboardType="number-pad"
+                    style={styles.textfield}
+                    onChangeText={text => setBirthDay(text)}
+                    value={birthDay}
+                  />
+            </View>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('Signup', {
+                firstName: firstName,
+                lastName: lastName,
+                birthDay: birthDay,
+              })}
+            >
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Suivant</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          {/* </TouchableWithoutFeedback> */}
-        </SafeAreaView>
-      </LinearGradient>
-    );
-  }
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
+  );
 }
+
+export default SignupDetails
 
 const styles = StyleSheet.create({
   container: {

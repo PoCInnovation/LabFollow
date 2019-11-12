@@ -9,8 +9,8 @@ import Studies from '../views/Studies'
 const Navigator = createDrawerNavigator({
   Login: { screen: Login, navigationOptions: { title: 'Connexion', header: null } },
   Studies: { screen: Studies, navigationOptions: { title: 'Questionnaires', header: null, gesturesEnabled: false } },
-  Signup: { screen: Signup },
-  SignupDetails: { screen: SignupDetails },
+  Signup: { screen: Signup, navigationOptions: { title: 'Inscription', header: null } },
+  SignupDetails: { screen: SignupDetails, navigationOptions: { header: null } },
 });
 
 const NavigatorComponent = createAppContainer(Navigator);

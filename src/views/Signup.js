@@ -1,66 +1,97 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View, Text, TextInput, Keyboard } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Fontisto';
-import StackNavigatorHeader from '../components/NavigatorHeader';
+import { signupPatient } from '../network/register'
+import Context from "../store/context";
 
 FAIcon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
 
-export default class Signup extends React.Component {
-  static navigationOptions = {
-    title: 'Signup',
-    header: null,
-  };
-  render() {
-    const { navigate } = this.props.navigation;
-    return (
-      <LinearGradient
-        style={styles.container}
-        colors={["#00cdac", "#02aab0"]}
-      >
-        <SafeAreaView>
-          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
-          <StackNavigatorHeader navigation={this.props.navigation} />
-          <View style={styles.container}>
-            <FAIcon name='handshake-o' size={90} color='#fff' style={styles.mainIcon} />
-            <Text style={styles.title}>
-              Creation de compte
-        </Text>
-            <View style={styles.mainContainer}>
-              <Text style={styles.paragraph}>
-                Choisissez l'email et le mot de passe que vous vous souhaitez utiliser.
-            </Text>
-              {/* <Text style={styles.textfieldTitle}>Email</Text> */}
-              <View style={styles.textfieldContainer}>
-                <Icon style={styles.textfieldIcon} name="email" size={20} color="#fff" />
-                <TextInput placeholder="john.doe@email.com" placeholderTextColor="#ffffff77" autoCapitalize='none' style={styles.textfield}></TextInput>
-              </View>
-              {/* <Text style={styles.textfieldTitle}>Password</Text> */}
-              <View style={styles.textfieldContainer}>
-                <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
-                <TextInput placeholder="password" placeholderTextColor="#ffffff77" autoCapitalize='none' secureTextEntry={true} style={styles.textfield}></TextInput>
-              </View>
-              <View style={styles.textfieldContainer}>
-                <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
-                <TextInput placeholder="confirm password" placeholderTextColor="#ffffff77" autoCapitalize='none' secureTextEntry={true} style={styles.textfield}></TextInput>
-              </View>
-              <TouchableOpacity
-                onPress={() => navigate('SignupDetails')}>
-                <View style={styles.button}>
-                  <Text style={styles.buttonText}>Create</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-          {/* </TouchableWithoutFeedback> */}
-        </SafeAreaView>
-      </LinearGradient>
-    );
+const Signup = (props) => {
+
+  const [email, setEmail] = React.useState('new@epitech.eu')
+  const [password, setPassword] = React.useState('azerty')
+  const [passwordConfirm, setPasswordConfirm] = React.useState('azerty')
+  const name = props.navigation.getParam("firstName") + " " + props.navigation.getParam("lastName")
+
+  const createAccount = async (context) => {
+    if (password != passwordConfirm)
+      console.log("password ne matchent pas")
+    else {
+      const token = await signupPatient(name, email, password)
+      context.updateToken(token)
+      props.navigation.navigate('Studies')
+    }
   }
+
+  return (
+    <Context.Consumer>
+      {context => (
+        <LinearGradient
+          style={styles.container}
+          colors={["#00cdac", "#02aab0"]}
+        >
+          <SafeAreaView>
+            <View style={styles.container}>
+              <FAIcon name='handshake-o' size={90} color='#fff' style={styles.mainIcon} />
+              <Text style={styles.title}>Creation de compte</Text>
+              <View style={styles.mainContainer}>
+                <Text style={styles.paragraph}>
+                  Choisissez l'email et le mot de passe que vous vous souhaitez utiliser.
+                </Text>
+                <View style={styles.textfieldContainer}>
+                  <Icon style={styles.textfieldIcon} name="email" size={20} color="#fff" />
+                  <TextInput
+                    placeholder="Email"
+                    placeholderTextColor="#ffffff77"
+                    autoCapitalize='none'
+                    style={styles.textfield}
+                    onChangeText={text => setEmail(text)}
+                    value={email}
+                  />
+                </View>
+                <View style={styles.textfieldContainer}>
+                  <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
+                  <TextInput
+                    placeholder="Mot de passe"
+                    placeholderTextColor="#ffffff77"
+                    autoCapitalize='none'
+                    secureTextEntry={true}
+                    style={styles.textfield}
+                    onChangeText={text => setPassword(text)}
+                    value={password}
+                  />
+                </View>
+                <View style={styles.textfieldContainer}>
+                  <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
+                  <TextInput
+                    placeholder="Confirmez le mot de passe"
+                    placeholderTextColor="#ffffff77"
+                    autoCapitalize='none'
+                    secureTextEntry={true}
+                    style={styles.textfield}
+                    onChangeText={text => setPasswordConfirm(text)}
+                    value={passwordConfirm}
+                  />
+                </View>
+                <TouchableOpacity
+                  onPress={() => createAccount(context)}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Create</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </SafeAreaView>
+        </LinearGradient>
+      )}
+    </Context.Consumer>
+  );
 }
+
+export default Signup
 
 const styles = StyleSheet.create({
   container: {
