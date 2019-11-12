@@ -4,9 +4,8 @@ import StudyBlock from '../components/StudyBlock'
 import { apolloFetch } from './index'
 
 export function fetchMePatient(token, context) {
-  return new Promise((resolve, reject) => {
 
-    const query = `
+  const query = `
       query getPatientInfo {
         mePatient {
           doctors {
@@ -28,24 +27,23 @@ export function fetchMePatient(token, context) {
       }
     `;
 
-    apolloFetch.use(({ request, options }, next) => {
-      if (!options.headers) { options.headers = {}; }
-      options.headers['authorization'] = token;
-      next();
-    });
+  apolloFetch.use(({ request, options }, next) => {
+    if (!options.headers) { options.headers = {}; }
+    options.headers['authorization'] = token;
+    next();
+  });
 
-    return apolloFetch({ query })
-      .then(res => {
-        console.log(res.data.mePatient)
-        context.updateName(res.data.mePatient.name)
-        context.updateEmail(res.data.mePatient.email)
-        resolve(res.data.mePatient.surveys);
-      })
-      .catch(err => {
-        console.log(err)
-        reject(err)
-      })
-  })
+  return apolloFetch({ query })
+    .then(res => {
+      console.log(res.data.mePatient)
+      context.updateName(res.data.mePatient.name)
+      context.updateEmail(res.data.mePatient.email)
+      resolve(res.data.mePatient);
+    })
+    .catch(err => {
+      console.log(err)
+      reject(err)
+    })
 }
 
 export function MePatient(props) {
@@ -65,7 +63,7 @@ export function MePatient(props) {
   return (
     <View style={styles.studyList}>
       <FlatList
-        data={data}
+        data={data.surveys}
         renderItem={({ item }) => (<StudyBlock studyName={item.title} doctorName={item.submitter.name} studyCreationDate={item.createdAt} />)}
         keyExtractor={item => item.id}
         width='90%'

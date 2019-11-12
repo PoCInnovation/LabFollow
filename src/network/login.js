@@ -1,9 +1,8 @@
 import { apolloFetch } from './index'
 
 export function loginPatient(email, password) {
-  return new Promise((resolve, reject) => {
 
-    const query = `
+  const query = `
       mutation getPatientToken ($email: String!, $password: String!) {
         loginPatient (
           email: $email
@@ -14,18 +13,17 @@ export function loginPatient(email, password) {
       }
     `;
 
-    const variables = {
-      email: email,
-      password: password,
-    };
+  const variables = {
+    email: email,
+    password: password,
+  };
 
-    return apolloFetch({ query, variables })
-      .then(res => {
-        resolve(res.data.loginPatient.token);
-      })
-      .catch(err => {
-        console.log(err)
-        reject(err)
-      })
-  })
+  return apolloFetch({ query, variables })
+    .then(res => {
+      resolve(res.data.loginPatient.token);
+    })
+    .catch(err => {
+      console.log(err)
+      reject(err)
+    })
 }
