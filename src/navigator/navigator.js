@@ -11,8 +11,8 @@ const Hidden = () => {
 }
 
 const Navigator = createDrawerNavigator({
-  Studies: { screen: Studies, navigationOptions: { title: 'Questionnaires', header: null, gesturesEnabled: false } },
   Login: { screen: Login, navigationOptions: { title: 'Connexion', header: null, drawerLabel: <Hidden /> } },
+  Studies: { screen: Studies, navigationOptions: { title: 'Questionnaires', header: null, gesturesEnabled: false } },
   Signup: { screen: Signup, navigationOptions: { title: 'Inscription', header: null, drawerLabel: <Hidden /> } },
   SignupDetails: { screen: SignupDetails, navigationOptions: { header: null, drawerLabel: <Hidden /> } },
 });

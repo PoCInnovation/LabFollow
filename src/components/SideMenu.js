@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavigationActions } from 'react-navigation';
 import { ScrollView, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
 
 class SideMenu extends Component {
   navigateToScreen = (route) => () => {
