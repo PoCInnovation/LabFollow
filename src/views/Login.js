@@ -15,7 +15,7 @@ const Login = (props) => {
   const [password, setPassword] = React.useState('azerty')
 
   const handleLogin = async (context) => {
-    const token = await loginPatient(login, password)
+    const token = await loginPatient(login.trim(), password)
     context.updateToken(token)
     props.navigation.navigate('Studies')
   }

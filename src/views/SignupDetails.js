@@ -13,6 +13,14 @@ const SignupDetails = (props) => {
   const [lastName, setLastName] = React.useState('')
   const [birthDay, setBirthDay] = React.useState('')
 
+
+  const editDate = (newDate) => {
+    if (newDate.length == 2 || newDate.length == 5)
+      setBirthDay(newDate + '/')
+    else
+      setBirthDay(newDate)
+  }
+
   return (
     <LinearGradient
       style={styles.container}
@@ -56,14 +64,15 @@ const SignupDetails = (props) => {
                     autoCapitalize='none'
                     keyboardType="number-pad"
                     style={styles.textfield}
-                    onChangeText={text => setBirthDay(text)}
+                    onChangeText={text => editDate(text)}
                     value={birthDay}
+                    maxLength={10}
                   />
             </View>
             <TouchableOpacity
               onPress={() => props.navigation.navigate('Signup', {
-                firstName: firstName,
-                lastName: lastName,
+                firstName: firstName.trim(),
+                lastName: lastName.trim(),
                 birthDay: birthDay,
               })}
             >

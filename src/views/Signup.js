@@ -9,20 +9,48 @@ import Context from "../store/context";
 FAIcon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
 
+const TextError = (props) => {
+  return (
+    props.hasError ? (
+      <Text style={{ color: "red" }}>{props.value}</Text>
+    ) : (<View></View>)
+  )
+}
+
 const Signup = (props) => {
 
-  const [email, setEmail] = React.useState('new@epitech.eu')
-  const [password, setPassword] = React.useState('azerty')
-  const [passwordConfirm, setPasswordConfirm] = React.useState('azerty')
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [passwordConfirm, setPasswordConfirm] = React.useState('')
+
+  const [errorEmail, setErrorEmail] = React.useState(false)
+  const [errorPassword, setErrorPassword] = React.useState(false)
+  const [errorPasswordConfirm, setErrorPasswordConfirm] = React.useState(false)
+
+  const [passwordIdentical, setPasswordIdentical] = React.useState(false)
   const name = props.navigation.getParam("firstName") + " " + props.navigation.getParam("lastName")
 
+  const checkPasswords = () => {
+    if (errorEmail || errorPassword || errorPasswordConfirm)
+      return false
+    if (password === passwordConfirm)
+      return false
+    return true
+  }
+
   const createAccount = async (context) => {
-    if (password != passwordConfirm)
-      console.log("password ne matchent pas")
-    else {
-      const token = await signupPatient(name, email, password)
-      context.updateToken(token)
-      props.navigation.navigate('Studies')
+
+    setErrorEmail(email.trim() === "")
+    setErrorPassword(password === "")
+    setErrorPasswordConfirm(passwordConfirm === "")
+    setPasswordIdentical(checkPasswords())
+
+    if (!passwordIdentical && !errorEmail && !errorPassword && !errorPasswordConfirm) {
+      const token = await signupPatient(name, email.trim(), password)
+      if (token) {
+        context.updateToken(token)
+        props.navigation.navigate('Studies')
+      }
     }
   }
 
@@ -51,6 +79,7 @@ const Signup = (props) => {
                     onChangeText={text => setEmail(text)}
                     value={email}
                   />
+                  <TextError hasError={errorEmail} value="Ce champ est obligatoire" />
                 </View>
                 <View style={styles.textfieldContainer}>
                   <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
@@ -63,6 +92,7 @@ const Signup = (props) => {
                     onChangeText={text => setPassword(text)}
                     value={password}
                   />
+                  <TextError hasError={errorPassword} value="Ce champ est obligatoire" />
                 </View>
                 <View style={styles.textfieldContainer}>
                   <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
@@ -75,6 +105,7 @@ const Signup = (props) => {
                     onChangeText={text => setPasswordConfirm(text)}
                     value={passwordConfirm}
                   />
+                  <TextError hasError={errorPasswordConfirm} value="Ce champ est obligatoire" />
                 </View>
                 <TouchableOpacity
                   onPress={() => createAccount(context)}>
@@ -82,6 +113,7 @@ const Signup = (props) => {
                     <Text style={styles.buttonText}>Create</Text>
                   </View>
                 </TouchableOpacity>
+                <TextError hasError={passwordIdentical} value="Les mots de passe ne sont pas identiques" />
               </View>
             </View>
           </SafeAreaView>
