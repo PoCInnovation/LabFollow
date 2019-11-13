@@ -1,125 +1,114 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
-import Icon from 'react-native-vector-icons/Fontisto';
 import { signupPatient } from '../network/register'
+import { StyledInput } from '../components/FormWrapper'
 import Context from "../store/context";
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 FAIcon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
 
-const TextError = (props) => {
-  return (
-    props.hasError ? (
-      <Text style={{ color: "red" }}>{props.value}</Text>
-    ) : (<View></View>)
-  )
-}
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email()
+    .label('Email')
+    .required("Ce champ est obligatoire"),
+  password: yup
+    .string()
+    .label('Password')
+    .required("Ce champ est obligatoire")
+    .min(6, '6 charactères minimum'),
+  confirmPassword: yup
+    .string()
+    .required("Ce champ est obligatoire")
+    .label('Confirm password')
+    .test('passwords-match', 'Les mots de passe ne sont pas identiques', function (value) {
+      return this.parent.password === value;
+    }),
+});
+
 
 const Signup = (props) => {
 
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [passwordConfirm, setPasswordConfirm] = React.useState('')
-
-  const [errorEmail, setErrorEmail] = React.useState(false)
-  const [errorPassword, setErrorPassword] = React.useState(false)
-  const [errorPasswordConfirm, setErrorPasswordConfirm] = React.useState(false)
-
-  const [passwordIdentical, setPasswordIdentical] = React.useState(false)
   const name = props.navigation.getParam("firstName") + " " + props.navigation.getParam("lastName")
 
-  const checkPasswords = () => {
-    if (errorEmail || errorPassword || errorPasswordConfirm)
-      return false
-    if (password === passwordConfirm)
-      return false
-    return true
-  }
-
-  const createAccount = async (context) => {
-
-    setErrorEmail(email.trim() === "")
-    setErrorPassword(password === "")
-    setErrorPasswordConfirm(passwordConfirm === "")
-    setPasswordIdentical(checkPasswords())
-
-    if (!passwordIdentical && !errorEmail && !errorPassword && !errorPasswordConfirm) {
-      const token = await signupPatient(name, email.trim(), password)
-      if (token) {
-        context.updateToken(token)
-        props.navigation.navigate('Studies')
-      }
+  const createAccount = async (context, values) => {
+    const token = await signupPatient(name, values.email.trim(), values.password)
+    if (token) {
+      context.updateToken(token)
+      props.navigation.navigate('Studies')
     }
   }
 
   return (
     <Context.Consumer>
       {context => (
-        <LinearGradient
-          style={styles.container}
-          colors={["#00cdac", "#02aab0"]}
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+            confirmPassword: '',
+          }}
+          onSubmit={(values) => { createAccount(context, values) }}
+          validationSchema={validationSchema}
         >
-          <SafeAreaView>
-            <View style={styles.container}>
-              <FAIcon name='handshake-o' size={90} color='#fff' style={styles.mainIcon} />
-              <Text style={styles.title}>Creation de compte</Text>
-              <View style={styles.mainContainer}>
-                <Text style={styles.paragraph}>
-                  Choisissez l'email et le mot de passe que vous vous souhaitez utiliser.
-                </Text>
-                <View style={styles.textfieldContainer}>
-                  <Icon style={styles.textfieldIcon} name="email" size={20} color="#fff" />
-                  <TextInput
-                    placeholder="Email"
-                    placeholderTextColor="#ffffff77"
-                    autoCapitalize='none'
-                    style={styles.textfield}
-                    onChangeText={text => setEmail(text)}
-                    value={email}
-                  />
-                  <TextError hasError={errorEmail} value="Ce champ est obligatoire" />
-                </View>
-                <View style={styles.textfieldContainer}>
-                  <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
-                  <TextInput
-                    placeholder="Mot de passe"
-                    placeholderTextColor="#ffffff77"
-                    autoCapitalize='none'
-                    secureTextEntry={true}
-                    style={styles.textfield}
-                    onChangeText={text => setPassword(text)}
-                    value={password}
-                  />
-                  <TextError hasError={errorPassword} value="Ce champ est obligatoire" />
-                </View>
-                <View style={styles.textfieldContainer}>
-                  <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
-                  <TextInput
-                    placeholder="Confirmez le mot de passe"
-                    placeholderTextColor="#ffffff77"
-                    autoCapitalize='none'
-                    secureTextEntry={true}
-                    style={styles.textfield}
-                    onChangeText={text => setPasswordConfirm(text)}
-                    value={passwordConfirm}
-                  />
-                  <TextError hasError={errorPasswordConfirm} value="Ce champ est obligatoire" />
-                </View>
-                <TouchableOpacity
-                  onPress={() => createAccount(context)}>
-                  <View style={styles.button}>
-                    <Text style={styles.buttonText}>Create</Text>
+          {formikProps => (
+            <LinearGradient
+              style={styles.container}
+              colors={["#00cdac", "#02aab0"]}
+            >
+              <SafeAreaView>
+                <View style={styles.container}>
+                  <FAIcon name='handshake-o' size={90} color='#fff' style={styles.mainIcon} />
+                  <Text style={styles.title}>Creation de compte</Text>
+                  <View style={styles.mainContainer}>
+                    <Text style={styles.paragraph}>
+                      Choisissez l'email et le mot de passe que vous vous souhaitez utiliser.
+                    </Text>
+                    <View>
+                      <StyledInput
+                        label="Email"
+                        icon="email"
+                        formikProps={formikProps}
+                        formikKey="email"
+                      // autoFocus
+                      />
+                      <StyledInput
+                        label="Password"
+                        icon="locked"
+                        formikProps={formikProps}
+                        formikKey="password"
+                        secureTextEntry
+                      />
+                      <StyledInput
+                        label="Confirm Password"
+                        icon="locked"
+                        formikProps={formikProps}
+                        formikKey="confirmPassword"
+                        secureTextEntry
+                      />
+                    </View>
+                    {formikProps.isSubmitting ? (
+                      <ActivityIndicator />
+                    ) : (
+                        <TouchableOpacity onPress={formikProps.handleSubmit}>
+                          <View style={styles.button}>
+                            <Text style={styles.buttonText}>Créer</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )}
                   </View>
-                </TouchableOpacity>
-                <TextError hasError={passwordIdentical} value="Les mots de passe ne sont pas identiques" />
-              </View>
-            </View>
-          </SafeAreaView>
-        </LinearGradient>
+                </View>
+              </SafeAreaView>
+            </LinearGradient>
+          )}
+        </Formik>
       )}
-    </Context.Consumer>
+    </Context.Consumer >
   );
 }
 
@@ -160,27 +149,6 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 5
-  },
-  textfieldContainer: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#fff',
-    width: 270,
-    marginTop: 10,
-  },
-  textfieldIcon: {
-    padding: 10,
-    // backgroundColor: '#fff',
-  },
-  textfield: {
-    // borderColor: '#ddd',
-    // borderWidth: 1,
-    flex: 1,
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    paddingLeft: 0,
-    color: '#fff',
   },
   textfieldTitle: {
     color: '#fff',

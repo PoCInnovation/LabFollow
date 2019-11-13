@@ -1,89 +1,97 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, ActivityIndicator, SafeAreaView, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Fontisto';
+import { StyledInput } from '../components/FormWrapper'
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 FAIcon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
 
+const validationSchema = yup.object().shape({
+  firstName: yup
+    .string()
+    .trim()
+    .required("Ce champ est obligatoire"),
+  lastName: yup
+    .string()
+    .trim()
+    .required("Ce champ est obligatoire"),
+  birthDay: yup
+    .string()
+    .required("Ce champ est obligatoire")
+});
+
 const SignupDetails = (props) => {
 
-  const [firstName, setFirstName] = React.useState('')
-  const [lastName, setLastName] = React.useState('')
-  const [birthDay, setBirthDay] = React.useState('')
-
-
-  const editDate = (newDate) => {
-    if (newDate.length == 2 || newDate.length == 5)
-      setBirthDay(newDate + '/')
-    else
-      setBirthDay(newDate)
-  }
-
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={["#00cdac", "#02aab0"]}
+    <Formik
+      initialValues={{
+        firstName: '',
+        lastName: '',
+        birthDay: '',
+      }}
+      onSubmit={(values) => {
+        console.log(values)
+        props.navigation.navigate('Signup', {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          birthDay: values.birthDay,
+        })
+      }}
+      validationSchema={validationSchema}
     >
-      <SafeAreaView>
-        <View style={styles.container}>
-          <Icon name='person' size={90} color='#fff' style={styles.mainIcon} />
-          <Text style={styles.title}>Bienvenue</Text>
-          <View style={styles.mainContainer}>
-            <Text style={styles.paragraph}>
-              Dites nous en plus à propos de vous. Ces informations seront utilisées par vos docteurs pour vous envoyer des questionnaires adaptés.
-            </Text>
-            <View style={styles.textfieldContainer}>
-              <Icon style={styles.textfieldIcon} name="person" size={20} color="#fff" />
-              <TextInput
-                    placeholder="Prénom"
-                    placeholderTextColor="#ffffff77"
-                    autoCapitalize='none'
-                    style={styles.textfield}
-                    onChangeText={text => setFirstName(text)}
-                    value={firstName}
+      {formikProps => (
+        <LinearGradient
+          style={styles.container}
+          colors={["#00cdac", "#02aab0"]}
+        >
+          <SafeAreaView>
+            <View style={styles.container}>
+              <Icon name='person' size={90} color='#fff' style={styles.mainIcon} />
+              <Text style={styles.title}>Bienvenue</Text>
+              <View style={styles.mainContainer}>
+                <Text style={styles.paragraph}>
+                  Dites nous en plus à propos de vous. Ces informations seront utilisées par vos docteurs pour vous envoyer des questionnaires adaptés.
+              </Text>
+                <View>
+                  <StyledInput
+                    label="Prénom"
+                    icon="person"
+                    formikProps={formikProps}
+                    formikKey="firstName"
                   />
-            </View>
-            <View style={styles.textfieldContainer}>
-              <Icon style={styles.textfieldIcon} name="person" size={20} color="#fff" />
-              <TextInput
-                    placeholder="Nom de famille"
-                    placeholderTextColor="#ffffff77"
-                    autoCapitalize='none'
-                    style={styles.textfield}
-                    onChangeText={text => setLastName(text)}
-                    value={lastName}
+                  <StyledInput
+                    label="Nom de famille"
+                    icon="person"
+                    formikProps={formikProps}
+                    formikKey="lastName"
                   />
-            </View>
-            <View style={styles.textfieldContainer}>
-              <Icon style={styles.textfieldIcon} name="date" size={20} color="#fff" />
-              <TextInput
-                    placeholder="JJ.MM.AAAA"
-                    placeholderTextColor="#ffffff77"
-                    autoCapitalize='none'
+                  <StyledInput
+                    label="JJ.MM.AAAA"
+                    icon="date"
+                    formikProps={formikProps}
+                    formikKey="birthDay"
                     keyboardType="number-pad"
-                    style={styles.textfield}
-                    onChangeText={text => editDate(text)}
-                    value={birthDay}
-                    maxLength={10}
                   />
-            </View>
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate('Signup', {
-                firstName: firstName.trim(),
-                lastName: lastName.trim(),
-                birthDay: birthDay,
-              })}
-            >
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Suivant</Text>
+                </View>
+                {formikProps.isSubmitting ? (
+                  <ActivityIndicator />
+                ) : (
+                    <TouchableOpacity onPress={formikProps.handleSubmit}>
+                      <View style={styles.button}>
+                        <Text style={styles.buttonText}>Suivant</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
               </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
-    </LinearGradient>
+            </View>
+          </SafeAreaView>
+        </LinearGradient>
+      )}
+    </Formik>
   );
 }
 

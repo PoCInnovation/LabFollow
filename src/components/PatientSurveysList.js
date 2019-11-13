@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import StudyBlock from './StudyBlock'
 import { fetchMePatient } from '../network/mePatient'
 
@@ -29,7 +29,7 @@ export function PatientSurveysList(props) {
 
   return (
     <View style={styles.studyList}>
-      {!data ? <Text>Loading...</Text> :
+      {!data ? <ActivityIndicator /> :
         <FlatList
           data={data.surveys}
           renderItem={({ item }) => (<StudyBlock studyName={item.title} doctorName={item.submitter.name} studyCreationDate={item.createdAt} />)}
