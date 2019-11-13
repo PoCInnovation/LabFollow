@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import MainHeader from '../components/MainHeader'
-import { ScrollView } from 'react-native-gesture-handler';
 import { PatientSurveysList } from '../components/PatientSurveysList'
 import Context from "../store/context";
 
@@ -13,9 +12,7 @@ const Studies = (props) => {
         <View>
           <MainHeader title="Mes questionnaires" navigation={props.navigation} context={context} />
           <SafeAreaView>
-            <ScrollView style={styles.scrollView}>
-              <PatientSurveysList context={context} />
-            </ScrollView>
+            <PatientSurveysList context={context} />
           </SafeAreaView>
         </View>
       )}
@@ -24,11 +21,3 @@ const Studies = (props) => {
 }
 
 export default Studies
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: '#ffffff',
-    height: '100%',
-    width: '100%',
-  },
-});

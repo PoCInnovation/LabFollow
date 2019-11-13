@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import StudyBlock from './StudyBlock'
 import { fetchMePatient } from '../network/mePatient'
@@ -6,6 +6,7 @@ import { fetchMePatient } from '../network/mePatient'
 export function PatientSurveysList(props) {
 
   const [data, setData] = React.useState()
+  const [refreshing, setRefresh] = useState(false);
 
   useEffect(() => {
     if (!data) {
@@ -23,8 +24,15 @@ export function PatientSurveysList(props) {
     }
   }, [data]);
 
+  handleRefresh = () => {
+    setRefresh(true);
+    getData(props.context.token);
+  };
+
   const getData = async (token) => {
+    setData()
     setData(await fetchMePatient(token))
+    setRefresh(false);
   }
 
   return (
@@ -32,9 +40,17 @@ export function PatientSurveysList(props) {
       {!data ? <ActivityIndicator /> :
         <FlatList
           data={data.surveys}
-          renderItem={({ item }) => (<StudyBlock studyName={item.title} doctorName={item.submitter.name} studyCreationDate={item.createdAt} />)}
-          keyExtractor={item => item.id}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
           width='90%'
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <StudyBlock
+              studyName={item.title}
+              doctorName={item.submitter.name}
+              studyCreationDate={item.createdAt}
+            />
+          )}
         />
       }
     </View>
@@ -43,10 +59,12 @@ export function PatientSurveysList(props) {
 
 const styles = StyleSheet.create({
   studyList: {
-    flex: 1,
-    alignItems: 'center',
+    // flex: 1,
+    // alignItems: 'center',
+    marginStart: 30,
     justifyContent: 'center',
-    backgroundColor: '#ffffff',
-    width: '100%',
+    backgroundColor: 'white',
+    // width: '100%',
+    // height: '100%',
   },
 });

@@ -1,22 +1,21 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-export default class StudyBlock extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-
-        <TouchableOpacity>
-          <Text style={styles.studyTitle}>{this.props.studyName}</Text>
-          <View style={styles.studyOverview}>
-            <Text>Dr. </Text>
-            <Text>{this.props.doctorName}</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+const StudyBlock = (props) => {
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity>
+        <Text style={styles.studyTitle}>{props.studyName}</Text>
+        <View style={styles.studyOverview}>
+          <Text>Dr. </Text>
+          <Text>{props.doctorName}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 }
+
+export default StudyBlock
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +32,6 @@ const styles = StyleSheet.create({
   studyOverview: {
     flexDirection: 'row',
     marginTop: 5,
-    color: '#666',
+    color: 'white',
   },
 });
