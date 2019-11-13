@@ -15,6 +15,19 @@ const StudyBlock = (props) => {
   );
 }
 
+export const InfoBlock = (props) => {
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity>
+        <Text style={styles.studyTitle}>{props.prefix}</Text>
+        <View style={styles.studyOverview}>
+          <Text>{props.suffix}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 export default StudyBlock
 
 const styles = StyleSheet.create({

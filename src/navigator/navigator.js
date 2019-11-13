@@ -5,6 +5,8 @@ import Login from '../views/Login'
 import Signup from '../views/Signup'
 import SignupDetails from '../views/SignupDetails'
 import Studies from '../views/Studies'
+import Profile from '../views/Profile'
+import Doctors from '../views/Doctors'
 
 const Hidden = () => {
     return null;
@@ -12,7 +14,9 @@ const Hidden = () => {
 
 const Navigator = createDrawerNavigator({
   Login: { screen: Login, navigationOptions: { title: 'Connexion', header: null, drawerLabel: <Hidden /> } },
-  Studies: { screen: Studies, navigationOptions: { title: 'Questionnaires', header: null, gesturesEnabled: false } },
+  Studies: { screen: Studies, navigationOptions: { title: 'Mes questionnaires', header: null, gesturesEnabled: false } },
+  Doctors: { screen: Doctors, navigationOptions: { title: 'Mes docteurs', header: null, gesturesEnabled: false } },
+  Profile: { screen: Profile, navigationOptions: { title: 'Mon profile', header: null, gesturesEnabled: false } },
   Signup: { screen: Signup, navigationOptions: { title: 'Inscription', header: null, drawerLabel: <Hidden /> } },
   SignupDetails: { screen: SignupDetails, navigationOptions: { header: null, drawerLabel: <Hidden /> } },
 });
