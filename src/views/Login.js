@@ -1,80 +1,103 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Keyboard, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Keyboard, TouchableOpacity, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Fontisto';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { loginPatient } from '../network/login'
+import { StyledInput } from '../components/FormWrapper'
 import Context from "../store/context";
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 Icon.loadFont();
 TextInput.defaultProps.selectionColor = 'white'
 
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email()
+    .label('Email')
+    .required("Ce champ est obligatoire"),
+  password: yup
+    .string()
+    .label('Password')
+    .required("Ce champ est obligatoire")
+});
+
 const Login = (props) => {
 
-  const [login, setLogin] = React.useState('jean@epitech.eu')
-  const [password, setPassword] = React.useState('azerty')
-
-  const handleLogin = async (context) => {
-    const token = await loginPatient(login.trim(), password)
-    context.updateToken(token)
-    props.navigation.navigate('Studies')
+  const handleLogin = async (context, values) => {
+    const token = await loginPatient(values.email, values.password)
+    if (token) {
+      context.updateToken(token)
+      props.navigation.navigate('Studies')
+    }
   }
 
   return (
     <Context.Consumer>
       {context => (
-        <LinearGradient
-          style={styles.container}
-          colors={["#00cdac", "#02aab0"]}
+        <Formik
+          initialValues={{
+            email: 'jean@epitech.eu',
+            password: 'azerty',
+          }}
+          onSubmit={(values) => { handleLogin(context, values) }}
+          validationSchema={validationSchema}
         >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={styles.container}>
-              <Text style={styles.title}>
-                Lab Follow
+          {formikProps => (
+            <LinearGradient
+              style={styles.container}
+              colors={["#00cdac", "#02aab0"]}
+            >
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.container}>
+                  <Text style={styles.title}>
+                    Lab Follow
               </Text>
-              <View style={styles.mainContainer}>
-                <Text style={styles.paragraph}>
-                  Entrez vous identifiants pour vous connecter à LabFollow.
+                  <View style={styles.mainContainer}>
+                    <Text style={styles.paragraph}>
+                      Entrez vous identifiants pour vous connecter à LabFollow.
                 </Text>
-                <View style={styles.textfieldContainer}>
-                  <Icon style={styles.textfieldIcon} name="email" size={20} color="#fff" />
-                  <TextInput
-                    placeholder="email"
-                    placeholderTextColor="#ffffff77"
-                    autoCapitalize='none'
-                    style={styles.textfield}
-                    onChangeText={text => setLogin(text)}
-                    value={login}
-                  />
-                </View>
-                <View style={styles.textfieldContainer}>
-                  <Icon style={styles.textfieldIcon} name="locked" size={20} color="#fff" />
-                  <TextInput
-                    placeholder="password"
-                    placeholderTextColor="#ffffff77"
-                    autoCapitalize='none'
-                    secureTextEntry={true}
-                    style={styles.textfield}
-                    onChangeText={text => setPassword(text)}
-                    value={password}
-                  />
-                </View>
-                <TouchableOpacity onPress={() => {handleLogin(context)}}>
-                  <View style={styles.button}>
-                    <Text style={styles.buttonText}>Connexion</Text>
+                    <View>
+                      <StyledInput
+                        label="Email"
+                        icon="email"
+                        formikProps={formikProps}
+                        formikKey="email"
+                      // autoFocus
+                      />
+                      <StyledInput
+                        label="Password"
+                        icon="locked"
+                        formikProps={formikProps}
+                        formikKey="password"
+                        secureTextEntry
+                      />
+                    </View>
+                    {formikProps.isSubmitting ? (
+                      <ActivityIndicator />
+                    ) : (
+                        <TouchableOpacity onPress={formikProps.handleSubmit}>
+                          <View style={styles.button}>
+                            <Text style={styles.buttonText}>Connexion</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )}
                   </View>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity onPress={() => props.navigation.navigate('SignupDetails')}>
-                <View style={styles.button2}>
-                  <Text style={styles.button2Text}>Créer un compte</Text>
+                  <TouchableOpacity onPress={() => props.navigation.navigate('SignupDetails')}>
+                    <View style={styles.button2}>
+                      <Text style={styles.button2Text}>Créer un compte</Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
-          </TouchableWithoutFeedback>
-        </LinearGradient>
-      )}
-    </Context.Consumer>
+              </TouchableWithoutFeedback>
+            </LinearGradient>
+          )}
+        </Formik>
+      )
+      }
+    </Context.Consumer >
   );
 }
 

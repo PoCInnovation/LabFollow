@@ -16,7 +16,6 @@ const FieldWrapper = ({ children, formikProps, formikKey }) => (
 );
 
 export const StyledInput = ({ label, formikProps, formikKey, icon, keyboardType, ...rest }) => {
-  console.log("formikKey", formikKey)
   return (
     <FieldWrapper formikKey={formikKey} formikProps={formikProps}>
       <View style={styles.textfieldContainer}>
