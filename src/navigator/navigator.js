@@ -1,6 +1,7 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Login from '../views/Login'
 import Signup from '../views/Signup'
 import SignupDetails from '../views/SignupDetails'
@@ -9,16 +10,71 @@ import Profile from '../views/Profile'
 import Doctors from '../views/Doctors'
 
 const Hidden = () => {
-    return null;
+  return null;
 }
 
 const Navigator = createDrawerNavigator({
-  Login: { screen: Login, navigationOptions: { title: 'Connexion', header: null, drawerLabel: <Hidden /> } },
-  Studies: { screen: Studies, navigationOptions: { title: 'Mes questionnaires', header: null, gesturesEnabled: false } },
-  Doctors: { screen: Doctors, navigationOptions: { title: 'Mes docteurs', header: null, gesturesEnabled: false } },
-  Profile: { screen: Profile, navigationOptions: { title: 'Mon profile', header: null, gesturesEnabled: false } },
-  Signup: { screen: Signup, navigationOptions: { title: 'Inscription', header: null, drawerLabel: <Hidden /> } },
-  SignupDetails: { screen: SignupDetails, navigationOptions: { header: null, drawerLabel: <Hidden /> } },
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      header: null,
+      drawerLabel: <Hidden />
+    },
+  },
+  Studies: {
+    screen: Studies,
+    navigationOptions: {
+      title: 'Mes questionnaires',
+      header: null,
+      activeTintColor: "#00cdac",
+      gesturesEnabled: false,
+      drawerIcon: <FontAwesome5 name='wpforms' size={20} color='#00cdac' />
+    },
+  },
+  Doctors: {
+    screen: Doctors,
+    navigationOptions: {
+      title: 'Mes docteurs',
+      header: null,
+      activeTintColor: "#00cdac",
+      gesturesEnabled: false,
+      drawerIcon: <FontAwesome5 name='user-md' size={20} color='#00cdac' />
+    },
+  },
+  Profile: {
+    screen: Profile,
+    navigationOptions: {
+      title: 'Mon profile',
+      header: null,
+      activeTintColor: "#00cdac",
+      gesturesEnabled: false,
+      drawerIcon: <FontAwesome5 name='address-card' size={20} color='#00cdac' />
+    },
+  },
+  Signup: {
+    screen: Signup,
+    navigationOptions: {
+      header: null,
+      drawerLabel: <Hidden />
+    },
+  },
+  SignupDetails: {
+    screen: SignupDetails,
+    navigationOptions: {
+      header: null,
+      drawerLabel: <Hidden />
+    },
+  },
+}, {
+  contentOptions: {
+    activeTintColor: '#00cdac',
+    itemsContainerStyle: {
+      marginVertical: 0,
+    },
+    iconContainerStyle: {
+      opacity: 1
+    },
+  }
 });
 
 const NavigatorComponent = createAppContainer(Navigator);
