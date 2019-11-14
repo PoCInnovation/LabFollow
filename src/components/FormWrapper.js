@@ -9,7 +9,7 @@ TextInput.defaultProps.selectionColor = 'white'
 const FieldWrapper = ({ children, formikProps, formikKey }) => (
   <View>
     {children}
-    <Text style={{ color: 'red', marginTop: 10 }}>
+    <Text style={{ color: '#e64c4c', marginTop: 10 }}>
       {formikProps.touched[formikKey] && formikProps.errors[formikKey]}
     </Text>
   </View>

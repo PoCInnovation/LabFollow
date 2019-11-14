@@ -23,7 +23,17 @@ const Profile = (props) => {
               />
               <InfoBlock
                 prefix="Date de naissance"
-                suffix={context.birthDay}
+                suffix={context.birthDay ? context.birthDay : "Non précisée"}
+              />
+              <InfoBlock
+                prefix="Questionnaires reçus"
+                suffix={"Voir la liste de mes questionnaires"}
+                onpress={() => props.navigation.navigate('Studies')}
+              />
+              <InfoBlock
+                prefix="Mes docteurs"
+                suffix={"Voir la liste de mes docteurs"}
+                onpress={() => props.navigation.navigate('Doctors')}
               />
             </View>
           </SafeAreaView>

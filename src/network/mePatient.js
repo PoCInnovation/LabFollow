@@ -17,7 +17,7 @@ export function fetchMePatient(token) {
             id
             title
             content
-            submitter { name }
+            submitter { name email }
             createdAt
           }
         }

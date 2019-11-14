@@ -18,7 +18,7 @@ const StudyBlock = (props) => {
 export const InfoBlock = (props) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={props.onpress}>
         <Text style={styles.studyTitle}>{props.prefix}</Text>
         <View style={styles.studyOverview}>
           <Text>{props.suffix}</Text>

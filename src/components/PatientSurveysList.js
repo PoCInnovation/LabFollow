@@ -36,13 +36,14 @@ export function PatientSurveysList(props) {
   }
 
   return (
-    <View style={styles.studyList}>
+    <View>
+      {/* <View style={styles.studyList}> */}
       {!data ? <ActivityIndicator /> :
         <FlatList
           data={data.surveys}
           refreshing={refreshing}
           onRefresh={handleRefresh}
-          width='90%'
+          // width='90%'
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <StudyBlock
