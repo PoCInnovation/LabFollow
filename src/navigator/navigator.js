@@ -66,6 +66,7 @@ const Navigator = createDrawerNavigator({
     },
   },
 }, {
+  drawerWidth: 230,
   contentOptions: {
     activeTintColor: '#00cdac',
     itemsContainerStyle: {

@@ -27,7 +27,7 @@ const MainHeader = (props) => {
             <Icon
               style={styles.textfieldIcon}
               name="menu"
-              size={22}
+              size={27}
               color="#fff"
               onPress={() => props.navigation.openDrawer()}
             />
@@ -39,7 +39,7 @@ const MainHeader = (props) => {
             <Icon
               style={styles.textfieldIcon}
               name="exit-to-app"
-              size={22}
+              size={27}
               color="#d1625a"
               onPress={() => handleDisconnect(props.context)}
             />
