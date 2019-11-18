@@ -1,16 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Keyboard, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, Keyboard, TouchableOpacity, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/Fontisto';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { loginPatient } from '../network/login'
 import { StyledInput } from '../components/FormWrapper'
 import Context from "../store/context";
 import { Formik } from 'formik';
 import * as yup from 'yup';
-
-Icon.loadFont();
-TextInput.defaultProps.selectionColor = 'white'
+import { fetchMePatient } from '../network/mePatient'
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -27,11 +24,23 @@ const validationSchema = yup.object().shape({
 const Login = (props) => {
 
   const handleLogin = async (context, values) => {
+
     const token = await loginPatient(values.email, values.password)
-    if (token) {
-      context.updateToken(token)
+
+    if (!token.errors) {
+      context.updateToken(token.data.loginPatient.token)
+      data = await fetchMePatient(token.data.loginPatient.token)
+      if (!data.error) {
+        context.updateId(data.data.mePatient.id)
+        context.updateName(data.data.mePatient.name)
+        context.updateEmail(data.data.mePatient.email)
+        context.updateDoctor(data.data.mePatient.doctors)
+        context.updateSurveys(data.data.mePatient.surveys)
+      } else
+        console.log(data.errors[0].message);
       props.navigation.navigate('Studies')
-    }
+    } else
+      console.log(token.errors[0].message);
   }
 
   return (

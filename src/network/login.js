@@ -1,6 +1,6 @@
 import { apolloFetch } from './index'
 
-export function loginPatient(email, password) {
+export async function loginPatient(email, password) {
 
   const query = `
       mutation getPatientToken ($email: String!, $password: String!) {
@@ -20,7 +20,7 @@ export function loginPatient(email, password) {
 
   return apolloFetch({ query, variables })
     .then(res => {
-      return (res.data.loginPatient.token);
+      return (res);
     })
     .catch(err => {
       console.log(err)

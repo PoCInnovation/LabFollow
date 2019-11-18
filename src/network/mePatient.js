@@ -1,6 +1,6 @@
 import { apolloFetch } from './index'
 
-export function fetchMePatient(token) {
+export async function fetchMePatient(token) {
 
   const query = `
       query getPatientInfo {
@@ -32,7 +32,7 @@ export function fetchMePatient(token) {
 
   return apolloFetch({ query })
     .then(res => {
-      return (res.data.mePatient);
+      return (res);
     })
     .catch(err => {
       console.log(err)
