@@ -42,6 +42,10 @@ const Signup = (props) => {
 
     if (!token.errors) {
       context.updateToken(token.data.signupPatient.token)
+      context.updateId(token.data.signupPatient.patient.id)
+      context.updateName(token.data.signupPatient.patient.name)
+      context.updateEmail(token.data.signupPatient.patient.email)
+      context.updateBirthday(token.data.signupPatient.patient.birthday)
       props.navigation.navigate('Studies')
     } else
       console.log(token.errors[0].message);

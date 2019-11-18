@@ -11,6 +11,7 @@ export async function signupPatient(name, email, password, birthday) {
           birthday: $birthday
         ) {
           token
+          patient {id email birthday name}
         }
       }
     `;
