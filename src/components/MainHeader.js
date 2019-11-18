@@ -3,8 +3,14 @@ import { Text, View, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 const MainHeader = (props) => {
+
+  const resetAction = StackActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+  });
 
   const handleDisconnect = (context) => {
     context.updateId("")
@@ -13,6 +19,7 @@ const MainHeader = (props) => {
     context.updateToken("")
     context.updateDoctor([])
     context.updateSurveys([])
+    props.navigation.dispatch(resetAction);
     props.navigation.navigate('Login')
   }
 
