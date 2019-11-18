@@ -19,7 +19,7 @@ const Doctors = (props) => {
               renderItem={({ item }) => (
                 <View style={styles.container}>
                   <View style={styles.leftContainer}>
-                    <InfoBlock prefix={item.name} suffix={item.email} />
+                    <InfoBlock prefix={item.name} suffix={item.speciality} />
                   </View>
                   <View style={styles.rightContainer}>
                     <DoctolibButton doctorName={item.name} />

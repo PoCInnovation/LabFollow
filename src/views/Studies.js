@@ -22,6 +22,7 @@ const Studies = (props) => {
       contextValue.updateId(data.data.mePatient.id)
       contextValue.updateName(data.data.mePatient.name)
       contextValue.updateEmail(data.data.mePatient.email)
+      contextValue.updateBirthday(data.data.mePatient.birthday)
       contextValue.updateDoctor(data.data.mePatient.doctors)
       contextValue.updateSurveys(data.data.mePatient.surveys)
     }

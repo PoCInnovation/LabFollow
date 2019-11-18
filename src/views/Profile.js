@@ -12,6 +12,7 @@ const Profile = (props) => {
         <View>
           <MainHeader title="Mes Informations" navigation={props.navigation} context={context} />
           <SafeAreaView>
+            {console.log(context)}
             <View style={styles.container}>
               <InfoBlock
                 prefix="Nom"
@@ -23,7 +24,7 @@ const Profile = (props) => {
               />
               <InfoBlock
                 prefix="Date de naissance"
-                suffix={context.birthDay ? context.birthDay : "Non précisée"}
+                suffix={context.birthday ? context.birthday : "Non précisée"}
               />
               <InfoBlock
                 prefix="Questionnaires reçus"

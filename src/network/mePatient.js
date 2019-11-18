@@ -9,10 +9,12 @@ export async function fetchMePatient(token) {
             id
             name
             email
+            speciality
           }
           id
           name
           email
+          birthday
           surveys {
             id
             title

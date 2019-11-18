@@ -34,6 +34,7 @@ const Login = (props) => {
         context.updateId(data.data.mePatient.id)
         context.updateName(data.data.mePatient.name)
         context.updateEmail(data.data.mePatient.email)
+        context.updateBirthday(data.data.mePatient.birthday)
         context.updateDoctor(data.data.mePatient.doctors)
         context.updateSurveys(data.data.mePatient.surveys)
       } else

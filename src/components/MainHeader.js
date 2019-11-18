@@ -16,6 +16,7 @@ const MainHeader = (props) => {
     context.updateId("")
     context.updateName("")
     context.updateEmail("")
+    context.updateBirthday("")
     context.updateToken("")
     context.updateDoctor([])
     context.updateSurveys([])
