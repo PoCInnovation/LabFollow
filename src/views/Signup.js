@@ -37,11 +37,18 @@ const Signup = (props) => {
   const name = props.navigation.getParam("firstName") + " " + props.navigation.getParam("lastName")
 
   const createAccount = async (context, values) => {
-    const token = await signupPatient(name, values.email.trim(), values.password)
-    if (token) {
-      context.updateToken(token)
+
+    const token = await signupPatient(name, values.email.trim(), values.password, props.navigation.getParam("birthDay"))
+
+    if (!token.errors) {
+      context.updateToken(token.data.signupPatient.token)
+      context.updateId(token.data.signupPatient.patient.id)
+      context.updateName(token.data.signupPatient.patient.name)
+      context.updateEmail(token.data.signupPatient.patient.email)
+      context.updateBirthday(token.data.signupPatient.patient.birthday)
       props.navigation.navigate('Studies')
-    }
+    } else
+      console.log(token.errors[0].message);
   }
 
   return (

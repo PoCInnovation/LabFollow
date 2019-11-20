@@ -6,6 +6,7 @@ const provider = props => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [birthday, setBirthday] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [surveys, setSurveys] = useState([]);
 
@@ -16,12 +17,14 @@ const provider = props => {
         id,
         name,
         email,
+        birthday,
         doctors,
         surveys,
         updateToken: setToken,
         updateId: setId,
         updateName: setName,
         updateEmail: setEmail,
+        updateBirthday: setBirthday,
         updateDoctor: setDoctors,
         updateSurveys: setSurveys,
       }}
