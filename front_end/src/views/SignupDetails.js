@@ -21,7 +21,7 @@ const validationSchema = yup.object().shape({
     .required("Ce champ est obligatoire"),
   birthDay: yup
     .string()
-    .required("Ce champ est obligatoire")
+    .required("Ce champ est obligatoire"),
 });
 
 const SignupDetails = (props) => {

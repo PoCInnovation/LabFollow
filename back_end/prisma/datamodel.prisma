@@ -1,0 +1,31 @@
+type Doctor {
+  id:          ID! @id
+  email:       String!  @unique
+  password:    String!
+  speciality:  String!
+  name:        String!
+  patients:    [Patient]
+  surveys:     [Survey]
+}
+
+type Patient {
+  id:          ID! @id
+  email:       String!  @unique
+  password:    String!
+  birthday:    String!
+  name:        String!
+  doctors:     [Doctor]
+  surveys:     [Survey]
+}
+
+type Survey {
+  id:          ID! @id
+  createdAt:   DateTime! @createdAt
+  updatedAt:   DateTime! @updatedAt
+  published:   Boolean!  @default(value: false)
+  answered:    Boolean!  @default(value: false)
+  title:       String!
+  content:     String!
+  submitter:   Doctor!
+  patient:     Patient!
+}

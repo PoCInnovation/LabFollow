@@ -1,25 +1,22 @@
 import { apolloFetch } from './index'
 
-export async function signupPatient(name, email, password, birthday) {
+export async function editPatient(id, email, name, birthday) {
 
   const query = `
-      mutation createPatientToken ($email: String!, $password: String!, $name: String!, $birthday: String!) {
-        signupPatient (
+      mutation updatePatient ($id: ID, $email: String!, $name: String!, $birthday: String!) {
+        editPatient (
+          id: $id
           name: $name
           email: $email
-          password: $password
           birthday: $birthday
-        ) {
-          token
-          patient {id email birthday name}
-        }
+        ) {patient{name email id birthday}}
       }
     `;
 
   const variables = {
-    name, name,
+    id: id,
+    name: name,
     email: email,
-    password: password,
     birthday: birthday,
   };
 

@@ -1,15 +1,13 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, Keyboard, TouchableOpacity, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import FAIcon from 'react-native-vector-icons/FontAwesome';
-import { signupPatient } from '../network/register'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { loginPatient } from '../network/login'
 import { StyledInput } from '../components/FormWrapper'
 import Context from "../store/context";
 import { Formik } from 'formik';
 import * as yup from 'yup';
-
-FAIcon.loadFont();
-TextInput.defaultProps.selectionColor = 'white'
+import { fetchMePatient } from '../network/mePatient'
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -21,31 +19,26 @@ const validationSchema = yup.object().shape({
     .string()
     .label('Password')
     .required("Ce champ est obligatoire")
-    .min(6, '6 charactères minimum'),
-  confirmPassword: yup
-    .string()
-    .required("Ce champ est obligatoire")
-    .label('Confirm password')
-    .test('passwords-match', 'Les mots de passe ne sont pas identiques', function (value) {
-      return this.parent.password === value;
-    }),
 });
 
+const Login = (props) => {
 
-const Signup = (props) => {
+  const handleLogin = async (context, values) => {
 
-  const name = props.navigation.getParam("firstName") + " " + props.navigation.getParam("lastName")
-
-  const createAccount = async (context, values) => {
-
-    const token = await signupPatient(name, values.email.trim(), values.password, props.navigation.getParam("birthDay"))
+    const token = await loginPatient(values.email, values.password)
 
     if (!token.errors) {
-      context.updateToken(token.data.signupPatient.token)
-      context.updateId(token.data.signupPatient.patient.id)
-      context.updateName(token.data.signupPatient.patient.name)
-      context.updateEmail(token.data.signupPatient.patient.email)
-      context.updateBirthday(token.data.signupPatient.patient.birthday)
+      context.updateToken(token.data.loginPatient.token)
+      data = await fetchMePatient(token.data.loginPatient.token)
+      if (!data.error) {
+        context.updateId(data.data.mePatient.id)
+        context.updateName(data.data.mePatient.name)
+        context.updateEmail(data.data.mePatient.email)
+        context.updateBirthday(data.data.mePatient.birthday)
+        context.updateDoctor(data.data.mePatient.doctors)
+        context.updateSurveys(data.data.mePatient.surveys)
+      } else
+        console.log(data.errors[0].message);
       props.navigation.navigate('Studies')
     } else
       console.log(token.errors[0].message);
@@ -56,11 +49,10 @@ const Signup = (props) => {
       {context => (
         <Formik
           initialValues={{
-            email: '',
-            password: '',
-            confirmPassword: '',
+            email: 'jean@epitech.eu',
+            password: 'azerty',
           }}
-          onSubmit={(values) => { createAccount(context, values) }}
+          onSubmit={(values) => { handleLogin(context, values) }}
           validationSchema={validationSchema}
         >
           {formikProps => (
@@ -68,34 +60,29 @@ const Signup = (props) => {
               style={styles.container}
               colors={["#00cdac", "#02aab0"]}
             >
-              <SafeAreaView>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={styles.container}>
-                  <FAIcon name='handshake-o' size={90} color='#fff' style={styles.mainIcon} />
-                  <Text style={styles.title}>Creation de compte</Text>
+                  <Text style={styles.title}>
+                    Lab Follow
+              </Text>
                   <View style={styles.mainContainer}>
                     <Text style={styles.paragraph}>
-                      Choisissez l'email et le mot de passe que vous vous souhaitez utiliser.
-                    </Text>
+                      Entrez vous identifiants pour vous connecter à LabFollow.
+                </Text>
                     <View>
                       <StyledInput
                         label="Email"
                         icon="email"
                         formikProps={formikProps}
                         formikKey="email"
-                      // autoFocus
+                        value={formikProps.values.email}
                       />
                       <StyledInput
                         label="Password"
                         icon="locked"
                         formikProps={formikProps}
+                        value={formikProps.values.password}
                         formikKey="password"
-                        secureTextEntry
-                      />
-                      <StyledInput
-                        label="Confirm Password"
-                        icon="locked"
-                        formikProps={formikProps}
-                        formikKey="confirmPassword"
                         secureTextEntry
                       />
                     </View>
@@ -104,22 +91,28 @@ const Signup = (props) => {
                     ) : (
                         <TouchableOpacity onPress={formikProps.handleSubmit}>
                           <View style={styles.button}>
-                            <Text style={styles.buttonText}>Créer</Text>
+                            <Text style={styles.buttonText}>Connexion</Text>
                           </View>
                         </TouchableOpacity>
                       )}
                   </View>
+                  <TouchableOpacity onPress={() => props.navigation.navigate('SignupDetails')}>
+                    <View style={styles.button2}>
+                      <Text style={styles.button2Text}>Créer un compte</Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </SafeAreaView>
+              </TouchableWithoutFeedback>
             </LinearGradient>
           )}
         </Formik>
-      )}
+      )
+      }
     </Context.Consumer >
   );
 }
 
-export default Signup
+export default Login
 
 const styles = StyleSheet.create({
   container: {
@@ -131,7 +124,8 @@ const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15,
+    padding: 8,
+    // paddingBottom: 20,
     borderRadius: 5,
     width: 300,
     backgroundColor: '#ffffff22',
@@ -147,15 +141,39 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   paragraph: {
+    margin: 15,
+    marginBottom: 0,
     fontSize: 14,
     textAlign: 'center',
     color: '#fff',
+    // letterSpacing: 1,
   },
   linearGradient: {
     flex: 1,
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 5
+  },
+  textfieldContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
+    width: 270,
+    marginTop: 10,
+  },
+  textfieldIcon: {
+    padding: 10,
+    // backgroundColor: '#fff',
+  },
+  textfield: {
+    // borderColor: '#ddd',
+    // borderWidth: 1,
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    color: '#fff',
   },
   textfieldTitle: {
     color: '#fff',
@@ -169,7 +187,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    margin: 20,
     padding: 5,
     width: 100,
     backgroundColor: '#ffffff33',
