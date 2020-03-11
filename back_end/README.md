@@ -1,4 +1,4 @@
-# LabFollow_BackEnd: GraphQL Apollo Server
+# LabFollow BackEnd: GraphQL Apollo Server
 
 ## How to use
 
